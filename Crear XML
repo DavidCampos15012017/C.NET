@@ -1,3 +1,4 @@
+// Este código utiliza un formulario para el objeto creado objCliente (línea 19) 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
