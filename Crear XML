@@ -1,1 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
+namespace Colecciones2
+{
+    public partial class Form1 : Form
+    {
+        List<Cliente> listaCliente = new List<Cliente>();
+        Cliente objCliente = new Cliente();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            objCliente.id= txtId.Text;
+            objCliente.nombre = txtNombre.Text;
+            objCliente.apellido1= txtApellido1.Text;
+            objCliente.apellido2= txtApellido2.Text;
+            objCliente.foto = (Bitmap)(imagen1.Image); // Así enviamos la foto del label al objeto
+           
+            listaCliente.Add(objCliente);
+            listar();
+
+
+            SaveFileDialog sv = new SaveFileDialog(); // Creamos la ventana de dialogo para guardar
+            sv.FileName = "Archivo Cliente"; // Le damos nombre al archivo
+            sv.Filter = "Archivo Binario|*.bin"; // Le damos formato
+            if (sv.ShowDialog() == DialogResult.OK) // Validamos el tipo de ventana como "OK"
+            {
+                using (FileStream fs = new FileStream(sv.FileName, FileMode.Create)) // Usamos FileStream para guardar el archivo
+                {
+                    BinaryFormatter bf = new BinaryFormatter(); // Creamos el tipo de objeto que tendrá el arhivo a guardar.
+                    bf.Serialize(fs, objCliente); // Realizamos la conversión ( Asociamos el objeto (tipo) con el archivo a guardar (objeto)
+                }
+            }
+            
+        }
+       
+
+        public void listar()
+        {
+            dataGridView1.Rows.Clear();
+            foreach (Cliente c in listaCliente)
+            {
+                ListViewItem fila = new ListViewItem(c.id);
+                fila.SubItems.Add(c.nombre);
+                fila.SubItems.Add(c.apellido1);
+                fila.SubItems.Add(c.apellido2);
+                dataGridView1.Rows.Add(fila);
+            }
+        }
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
+        }
+    }
+}
